@@ -13,7 +13,7 @@ export const FabricJSCanvas = ({ className }: Props) => {
     const options = {
       width: canvasEl.current.parentElement.clientWidth,
       height: (canvasEl.current.parentElement.clientHeight / 7) * 6,
-      backgroundColor: "#f1f1f1",
+      backgroundColor: "#fdf6e3",
     };
     const canvas = new fabric.Canvas(canvasEl.current, options);
     // make the fabric.Canvas instance available to your app
