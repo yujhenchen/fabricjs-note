@@ -1,12 +1,12 @@
-import { Container } from "../components/container";
-import { PageLayout } from "../components/pageLayout";
+import { ContentContainer } from "../containers/contentContainer";
+import { PageContainer } from "../containers/pageContainer";
 
 export default function About() {
   return (
-    <Container>
-      <PageLayout>
+    <PageContainer>
+      <ContentContainer>
         <h1 className="text-3xl font-bold">About me</h1>
-      </PageLayout>
-    </Container>
+      </ContentContainer>
+    </PageContainer>
   );
 }
