@@ -4,7 +4,7 @@ import { Footer } from "../components/footer";
 export const ContentContainer = ({ children }: { children: ReactNode }) => {
   return (
     <div className="min-h-screen flex flex-col">
-      <main className="flex-1 relative">{children}</main>
+      <main className="flex-1 relative w-full">{children}</main>
       <Footer />
     </div>
   );
