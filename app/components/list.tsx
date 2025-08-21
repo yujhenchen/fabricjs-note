@@ -55,7 +55,7 @@ const ShapesButtons = () => {
 const ToolsButtons = () => {
   return (
     <>
-      <Button tooltip="import JSON">
+      <Button tooltip="import JSON" tooltipPosition="bottom">
         <SVG ariaLabel="import JSON">
           <path
             strokeLinecap="round"
@@ -65,7 +65,7 @@ const ToolsButtons = () => {
         </SVG>
       </Button>
 
-      <Button tooltip="export SVG">
+      <Button tooltip="export SVG" tooltipPosition="bottom">
         <SVG ariaLabel="export SVG">
           <path
             strokeLinecap="round"

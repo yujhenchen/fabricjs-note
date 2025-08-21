@@ -3,10 +3,24 @@ interface ButtonProps {
   onClick?: () => void;
   selected?: boolean;
   tooltip?: string;
+  tooltipPosition?: "top" | "bottom" | "left" | "right";
 }
 
-export const Button = ({ children, onClick, selected = false, tooltip = "" }: ButtonProps) => (
-  <div className="tooltip" data-tip={tooltip}>
+const tooltipPositionMap = {
+  top: "tooltip-top",
+  bottom: "tooltip-bottom",
+  left: "tooltip-left",
+  right: "tooltip-right",
+};
+
+export const Button = ({
+  children,
+  onClick,
+  selected = false,
+  tooltip = "",
+  tooltipPosition = "top",
+}: ButtonProps) => (
+  <div className={`tooltip ${tooltipPositionMap[tooltipPosition]}`} data-tip={tooltip}>
     <button
       type="button"
       className={`btn btn-square btn-ghost ${selected ? "btn-active" : ""}`}
