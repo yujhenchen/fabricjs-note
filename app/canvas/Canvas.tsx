@@ -1,47 +1,89 @@
 "use client";
 
 import * as fabric from "fabric"; // v6
-import { type RefObject, useEffect } from "react";
+import { type RefObject, useEffect, useRef } from "react";
+
+import { Handler } from "./handlers/handler";
+import type { FabricCanvas } from "./models/object.model";
+
+export interface CanvasInstance {
+  handler: Handler;
+  canvas: FabricCanvas;
+}
 
 interface CanvasProps {
-  ref: RefObject<HTMLCanvasElement>;
-  // onLoad: () => void;
+  // ref: RefObject<CanvasInstance>;
+  handlerRef: RefObject<Handler>;
+  fabricCanvasRef: RefObject<FabricCanvas>;
+
   canvasOptions?: Partial<fabric.CanvasOptions>;
   className?: string;
 }
 
-export const Canvas = ({
-  ref,
-  // onLoad,
+interface InternalCanvasProps {
+  handlerRef: RefObject<Handler>;
+  fabricCanvasRef: RefObject<FabricCanvas>;
+  canvasOptions?: Partial<fabric.CanvasOptions>;
+  className?: string;
+}
+
+const InternalCanvas = ({
+  handlerRef,
+  fabricCanvasRef,
   canvasOptions,
   className,
-}: CanvasProps) => {
+}: InternalCanvasProps) => {
+  const canvasElRef = useRef<HTMLCanvasElement>(null);
+
   useEffect(() => {
+    if (!canvasElRef.current) {
+      return;
+    }
+
     const options = {
-      width: ref.current.parentElement.clientWidth,
-      height: (ref.current.parentElement.clientHeight / 7) * 6,
+      width: canvasElRef.current.parentElement.clientWidth,
+      height: (canvasElRef.current.parentElement.clientHeight / 5) * 4,
       ...canvasOptions,
     };
-    const canvas = new fabric.Canvas(ref.current, options);
-    // make the fabric.Canvas instance available to your app
-    // updateCanvasContext(canvas);
+    const canvas = new fabric.Canvas(canvasElRef.current, options);
 
-    // const helloWorld = new fabric.FabricText("hello world");
-    // canvas.add(helloWorld);
-    // canvas.centerObject(helloWorld);
+    fabricCanvasRef.current = canvas;
+    handlerRef.current = new Handler({
+      canvas,
+    });
+
     canvas.renderAll();
 
     return () => {
-      // updateCanvasContext(null);
       canvas.dispose();
+      handlerRef.current = null;
+      fabricCanvasRef.current = null;
     };
-  }, [ref.current, canvasOptions]);
+  }, [canvasOptions, handlerRef, fabricCanvasRef]);
 
   return (
-    <canvas
+    <div className="w-full h-full">
+      <canvas ref={canvasElRef} className={className} />
+    </div>
+  );
+};
+
+export const Canvas = ({ handlerRef, fabricCanvasRef, canvasOptions, className }: CanvasProps) => {
+  // NOTE: useImperativeHandle runs earlier than useEffect, which makes handlerRef.current always null
+  // const handlerRef = useRef<Handler | null>(null);
+  // const fabricCanvasRef = useRef<FabricCanvas | null>(null);
+
+  // useImperativeHandle(ref, () => ({
+  // 	handler: handlerRef.current,
+  // 	canvas: fabricCanvasRef.current,
+  // }));
+
+  return (
+    <InternalCanvas
+      handlerRef={handlerRef}
+      fabricCanvasRef={fabricCanvasRef}
+      canvasOptions={canvasOptions}
       className={className}
-      // ref={canvasEl}
-      ref={ref}
     />
   );
 };
