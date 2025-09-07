@@ -15,11 +15,7 @@ export class ObjectFactory {
   //   return ObjectFactory.#instance;
   // }
 
-  static createObject(
-    type: ObjectType,
-    text: string = "default ",
-    options?: unknown,
-  ): fabric.Object {
+  static createObject(type: ObjectType, options?: unknown): fabric.Object {
     switch (type) {
       case "circle":
         return new fabric.Circle(options);
@@ -27,10 +23,12 @@ export class ObjectFactory {
         return new fabric.Triangle(options);
       case "square":
         return new fabric.Rect(options);
-      case "text":
-        return new fabric.FabricText(text, options);
       default:
         return new fabric.Rect(options);
     }
+  }
+
+  static createText(text: string = "default ", options?: unknown): fabric.Object {
+    return new fabric.FabricText(text, options);
   }
 }
